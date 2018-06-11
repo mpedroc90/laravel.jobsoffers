@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Employer;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase
 {
@@ -15,7 +15,14 @@ class ExampleTest extends TestCase
     public function testBasicTest()
     {
         $response = $this->get('/');
-
         $response->assertStatus(200);
+    }
+
+    public function testCanInstantiateTodolist()
+    {
+        $list = new Employer;
+        $this->assertEquals(get_class($list), 'App\Employer');
+
+
     }
 }
