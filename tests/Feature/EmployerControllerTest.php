@@ -13,7 +13,6 @@ class EmployerControllerTest extends TestCase
     protected $name = 'fake name';
     protected $email = 'fake@email.com';
 
-
     protected function setUp()
     {
         parent::setUp();
@@ -21,8 +20,6 @@ class EmployerControllerTest extends TestCase
         $this->name = 'fake name';
         $this->email = 'fake@email.com';
     }
-
-
 
     /**
      *  Should create_user and employer
@@ -33,13 +30,12 @@ class EmployerControllerTest extends TestCase
     {
 
         $response =$this->registerEmployer();
+
         $this->assertTrue(  $response->isOk());
         $this->assertDatabaseHas('users',['email' =>$this->email]);
         $this->assertDatabaseHas('employers', ['name'=> $this->name]);
 
     }
-
-
 
     public function test_should_return_bad_request()
     {
@@ -49,8 +45,6 @@ class EmployerControllerTest extends TestCase
 
         $this->assertTrue(  $response->getStatusCode() == 400);
     }
-
-
 
     private function registerEmployer()
     {

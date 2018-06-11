@@ -2,16 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Employer;
 
-use App\User;
+use App\Repositories\IEmployerRepository;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
-use Mockery\Exception;
+
+
 
 class EmployerController extends Controller
 {
+    /**
+     * @var IEmployerRepository
+     */
+    private $repository;
+
+
+    /**
+     * EmployerController constructor.
+     * @param IEmployerRepository $repository
+     */
+    public function __construct(IEmployerRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function register(Request $request)
     {
 
@@ -22,10 +37,15 @@ class EmployerController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
+
+
         if($validator->fails())
             return response($validator->errors(), 400);
 
-        $this->create($request->all());
+
+
+
+        $this->repository->Add($request->all());
 
         return response( 200);
     }
@@ -35,20 +55,7 @@ class EmployerController extends Controller
 
     protected function create(array $data)
     {
-        /** @var Employer $employer */
-        $employer = new Employer();
-        $employer->name = $data['name'];
-        $employer->description = $data['description'];
 
-
-        /** @var User $employer */
-        $user = new User();
-        $user->password = bcrypt($data['password']);
-        $user->email = $data['email'];
-
-        $employer->save();
-        $employer->user()->save($user);
     }
-
 
 }
