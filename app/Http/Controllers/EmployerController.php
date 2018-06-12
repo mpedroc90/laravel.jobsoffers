@@ -40,14 +40,16 @@ class EmployerController extends Controller
 
 
         if($validator->fails())
-            return response($validator->errors(), 400);
-
-
-
+            return redirect()
+                     ->route('registerEmployer')
+                     ->withInput();
 
         $this->repository->Add($request->all());
 
-        return response( 200);
+
+        return  redirect()
+                ->route('login');
+
     }
 
 

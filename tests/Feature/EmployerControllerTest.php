@@ -6,6 +6,8 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+
+
 class EmployerControllerTest extends TestCase
 {
 
@@ -21,35 +23,45 @@ class EmployerControllerTest extends TestCase
         $this->email = 'fake@email.com';
     }
 
+
+
     /**
-     *  Should create_user and employer
-     *
-     * @return void
+     *  Should register and employer and redirect to login
      */
     public function test_should_create_user()
     {
 
         $response =$this->registerEmployer();
 
-        $this->assertTrue(  $response->isOk());
+        $response->assertRedirect('login');
         $this->assertDatabaseHas('users',['email' =>$this->email]);
         $this->assertDatabaseHas('employers', ['name'=> $this->name]);
 
     }
 
+
+
+    /**
+     *  Should redirect to registerEmployer if something goes wrong.
+     */
     public function test_should_return_bad_request()
     {
         $this->password='';
 
         $response =$this->registerEmployer();
 
-        $this->assertTrue(  $response->getStatusCode() == 400);
+        $response->assertRedirect('employer/register');
     }
 
+
+    /**
+     *
+     * Register an user
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
     private function registerEmployer()
     {
-
-        return $this->post("/employer/register",[
+        return $this->post(route("registerEmployer"),[
             'name' => $this->name,
             'email' => $this->email,
             'password'=> $this->password,

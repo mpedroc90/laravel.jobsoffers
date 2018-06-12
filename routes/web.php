@@ -23,4 +23,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::post('/employer/register' , 'EmployerController@register');
+Route::post('/employer/register' , [
+    'as' => 'registerEmployer', 'uses' => 'EmployerController@register'
+    ]
+);
